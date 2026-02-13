@@ -85,7 +85,7 @@ button{
 
 <!-- Musik Slow Romantic -->
 <audio id="music" autoplay loop>
-<source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes_Music/Romantic/Romantic_Dreams.mp3" type="audio/mp3">
+  <source src="sound.mp4" type="audio/mp4">
 </audio>
 
 <script>
@@ -168,7 +168,7 @@ function typeWriter(text){
 function nembak(){
     document.getElementById("box").innerHTML=
     "<h2>"+nama+" 💖</h2>"+
-    "<p>So… will you be mine</p>"+
+    "<p>So…will you be mine?</p>"+
     "<button class='yes' onclick='yesAnswer()'>Yes 💕</button>"+
     "<button class='no' id='noBtn'>No</button>";
 
@@ -202,7 +202,7 @@ function yesAnswer(){
 
     // Auto WhatsApp
     setTimeout(()=>{
-        let pesan="halo bang love u 💖";
+        let pesan="halo bang love u❤️";
         window.open("https://wa.me/6285296377500?text="+encodeURIComponent(pesan));
     },2000);
 }
