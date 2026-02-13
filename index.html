@@ -3,68 +3,49 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Untuk Seseorang yang Spesial</title>
+<title>Untuk Kamu 🌙</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 
 body{
     height:100vh;
-    background:linear-gradient(135deg,#141e30,#243b55);
     overflow:hidden;
+    background:black;
+    color:white;
     display:flex;
     justify-content:center;
     align-items:center;
-    color:white;
 }
 
-/* Bintang */
-.star{
-    position:absolute;
-    width:2px;
-    height:2px;
-    background:white;
-    opacity:0.8;
-    animation:twinkle 2s infinite alternate;
-}
-@keyframes twinkle{
-    from{opacity:0.2}
-    to{opacity:1}
+/* Galaxy */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:-1;
 }
 
 /* Card */
 .card{
-    width:380px;
-    padding:30px;
+    width:420px;
+    padding:35px;
     border-radius:25px;
-    background:rgba(255,255,255,0.1);
+    background:rgba(255,255,255,0.08);
     backdrop-filter:blur(15px);
     text-align:center;
-    box-shadow:0 15px 40px rgba(0,0,0,0.5);
-    animation:fadeIn 1.5s ease;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+    position:relative;
 }
 
-@keyframes fadeIn{
-    from{opacity:0; transform:translateY(30px);}
-    to{opacity:1; transform:translateY(0);}
-}
-
-h2{
-    margin-bottom:15px;
-    font-weight:600;
-    color:#ff9ecf;
-}
-
-p{
-    min-height:80px;
-    margin-bottom:15px;
-}
+h2{color:#ff9ecf;margin-bottom:15px}
+p{min-height:90px;margin-bottom:20px;line-height:1.6}
 
 input{
     padding:10px;
-    border-radius:15px;
+    border-radius:20px;
     border:none;
     width:80%;
     text-align:center;
@@ -74,137 +55,158 @@ input{
 button{
     padding:10px 20px;
     border:none;
-    border-radius:20px;
-    margin:8px;
-    cursor:pointer;
+    border-radius:25px;
+    margin:10px;
     font-weight:bold;
+    cursor:pointer;
     transition:0.3s;
 }
 
-.btn-yes{
-    background:#ff4b7d;
-    color:white;
-}
+.yes{background:#ff4b7d;color:white}
+.yes:hover{background:#ff1f5a}
 
-.btn-yes:hover{
-    background:#ff1f5a;
-}
-
-.btn-no{
+.no{
     background:#ccc;
     position:absolute;
 }
-
-.final{
-    font-size:18px;
-    line-height:1.6;
-}
-
 </style>
 </head>
 <body>
 
+<canvas id="galaxy"></canvas>
+
 <div class="card" id="box">
-    <h2>Hai Kamu 🌙</h2>
-    <p>Masukin dulu nama kamu ya...</p>
-    <input type="text" id="nama" placeholder="Nama kamu...">
-    <br>
-    <button class="btn-yes" onclick="start()">Mulai Cerita</button>
+<h2>Hai Kamu 🌌</h2>
+<p>Sebelum mulai... tulis dulu nama kamu ya.</p>
+<input type="text" id="nama" placeholder="Nama kamu...">
+<br>
+<button class="yes" onclick="start()">Mulai</button>
 </div>
 
-<audio autoplay loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+<!-- Musik Slow Romantic -->
+<audio id="music" autoplay loop>
+<source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Holmes_Music/Romantic/Romantic_Dreams.mp3" type="audio/mp3">
 </audio>
 
 <script>
 
-/* Bintang */
-for(let i=0;i<120;i++){
-    let star=document.createElement("div");
-    star.className="star";
-    star.style.top=Math.random()*100+"vh";
-    star.style.left=Math.random()*100+"vw";
-    document.body.appendChild(star);
+/* Galaxy Background */
+const canvas=document.getElementById("galaxy");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let stars=[];
+for(let i=0;i<250;i++){
+    stars.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        r:Math.random()*1.5,
+        s:Math.random()*0.5
+    });
 }
 
-let story=[
-"Sejak pertama kali aku lihat kamu...",
-"Aku nggak tau kenapa dunia rasanya beda.",
-"Seolah-olah semuanya berhenti sebentar cuma buat ngasih aku waktu buat ngeliat kamu lebih lama.",
-"Senyum kamu itu sederhana...",
-"Tapi efeknya ke aku luar biasa.",
-"Setiap kamu lewat, jantung aku selalu nggak bisa diajak kompromi.",
-"Aku coba buat biasa aja...",
-"Aku coba buat nganggep ini cuma kagum sesaat...",
-"Tapi makin hari, rasa ini makin tumbuh.",
-"Dan sekarang aku sadar...",
-"Aku nggak mau cuma jadi penonton dalam hidup kamu."
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="white";
+    stars.forEach(star=>{
+        ctx.beginPath();
+        ctx.arc(star.x,star.y,star.r,0,Math.PI*2);
+        ctx.fill();
+        star.y+=star.s;
+        if(star.y>canvas.height) star.y=0;
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* Story */
+let cerita=[
+"Sejak pertama kali aku kenal kamu...",
+"Ada sesuatu yang berbeda yang nggak bisa aku jelasin.",
+"Setiap senyum kamu terasa seperti cahaya kecil di hidup aku.",
+"Aku coba bersikap biasa aja...",
+"Tapi kenyataannya, kamu selalu berhasil bikin jantung aku deg-degan.",
+"Dan malam ini, di bawah langit penuh bintang ini...",
+"Aku nggak mau lagi cuma diam."
 ];
 
-let index=0;
+let i=0;
 let nama="";
 
 function start(){
     nama=document.getElementById("nama").value;
-    if(nama==""){alert("Isi dulu namanya 😅");return;}
+    if(nama===""){alert("Isi dulu namanya ya 😊");return;}
     next();
 }
 
 function next(){
-    if(index<story.length){
+    if(i<cerita.length){
         document.getElementById("box").innerHTML=
-        "<h2>Untuk "+nama+" 💖</h2><p id='text'></p><button class='btn-yes' onclick='next()'>Lanjut</button>";
-        typeWriter(story[index]);
-        index++;
+        "<h2>Untuk "+nama+" ✨</h2><p id='text'></p><button class='yes' onclick='next()'>Lanjut</button>";
+        typeWriter(cerita[i]);
+        i++;
     }else{
-        confession();
+        nembak();
     }
 }
 
 function typeWriter(text){
-    let i=0;
+    let j=0;
     document.getElementById("text").innerHTML="";
     function typing(){
-        if(i<text.length){
-            document.getElementById("text").innerHTML+=text.charAt(i);
-            i++;
-            setTimeout(typing,40);
+        if(j<text.length){
+            document.getElementById("text").innerHTML+=text.charAt(j);
+            j++;
+            setTimeout(typing,35);
         }
     }
     typing();
 }
 
-function confession(){
+/* Confession */
+function nembak(){
     document.getElementById("box").innerHTML=
-    "<h2>"+nama+" 💕</h2>"+
-    "<p class='final'>Aku suka kamu.<br>Mau nggak jadi bagian paling indah dalam hidup aku?</p>"+
-    "<button class='btn-yes' onclick='accepted()'>Mau 💖</button>"+
-    "<button class='btn-no' id='noBtn'>Tidak</button>";
+    "<h2>"+nama+" 💖</h2>"+
+    "<p>So… will you be mine</p>"+
+    "<button class='yes' onclick='yesAnswer()'>Yes 💕</button>"+
+    "<button class='no' id='noBtn'>No</button>";
 
-    moveNo();
+    const noBtn=document.getElementById("noBtn");
+    noBtn.addEventListener("mouseover",moveNo);
+    noBtn.addEventListener("click",moveNo);
 }
 
 function moveNo(){
     const btn=document.getElementById("noBtn");
-    let speed=1;
-
-    function runaway(){
-        btn.style.top=Math.random()*300+"px";
-        btn.style.left=Math.random()*300+"px";
-        speed+=0.5;
-    }
-
-    btn.addEventListener("mouseover",runaway);
-    btn.addEventListener("click",runaway);
+    btn.style.top=Math.random()*300+"px";
+    btn.style.left=Math.random()*300+"px";
 }
 
-function accepted(){
+/* Fireworks + WA */
+function yesAnswer(){
+
+    // Fireworks effect
+    for(let k=0;k<100;k++){
+        ctx.fillStyle="hsl("+Math.random()*360+",100%,60%)";
+        ctx.beginPath();
+        ctx.arc(Math.random()*canvas.width,
+                Math.random()*canvas.height/2,
+                5,0,Math.PI*2);
+        ctx.fill();
+    }
+
     document.getElementById("box").innerHTML=
-    "<h2>Terima Kasih 😭💖</h2>"+
-    "<p class='final'>Aku janji bakal jagain kamu, bikin kamu ketawa,<br>dan jadi alasan kamu senyum setiap hari ✨</p>";
+    "<h2>💖 Kamu bilang YES 💖</h2>"+
+    "<p>Ini mungkin awal dari cerita paling indah ✨</p>";
+
+    // Auto WhatsApp
+    setTimeout(()=>{
+        let pesan="halo bang love u 💖";
+        window.open("https://wa.me/6285296377500?text="+encodeURIComponent(pesan));
+    },2000);
 }
 
 </script>
-
 </body>
 </html>
