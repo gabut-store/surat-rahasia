@@ -84,10 +84,49 @@ button{
 </div>
 
 <!-- Musik Slow Romantic -->
-<audio autoplay loop>
-  <source src="sound.mp3" type="audio/mpeg">
+<audio id="music" loop>
+  <source src="sound1.mp3" type="audio/mpeg">
 </audio>
+    
+<div id="musicNotif" class="notif">
+  🔔 Click anywhere to enable music 🎵
+</div>
+    
+<style>
+.notif{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(12px);
+    padding:12px 22px;
+    border-radius:25px;
+    color:white;
+    font-size:14px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.4);
+    animation:fadeSlide 1s ease;
+    z-index:999;
+}
 
+@keyframes fadeSlide{
+    from{opacity:0; transform:translate(-50%,-20px);}
+    to{opacity:1; transform:translate(-50%,0);}
+}
+</style>
+    
+<script>
+window.addEventListener("click", function(){
+    const music = document.getElementById("music");
+    music.play();
+    const notif = document.getElementById("musicNotif");
+    if(notif){
+        notif.style.opacity = "0";
+        setTimeout(()=>{ notif.remove(); }, 500);
+    }
+}, { once: true });
+</script>
+    
 <script>
 
 /* Galaxy Background */
